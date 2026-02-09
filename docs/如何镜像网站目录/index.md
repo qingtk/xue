@@ -1,6 +1,9 @@
-> 我想镜像网站的一个子目录，有哪些好的办法？ 比如保存https://example.com/path/sub/ 下的全部文件
+# 如何镜像网站目录
 
-你想“镜像网站的一个子目录”（例如 `https://example.com/path/sub/`），也就是递归下载该目录下的所有文件（HTML、图片、CSS、JS 等），常见的几种做法如下👇
+❓
+> 我想镜像网站的一个目录，有哪些好的办法？ 比如保存https://example.com/path/sub/ 下的全部文件
+
+你想“镜像网站的一个目录”（例如 `https://example.com/path/sub/`），也就是递归下载该目录下的所有文件（HTML、图片、CSS、JS 等），常见的几种做法如下👇
 
 ---
 

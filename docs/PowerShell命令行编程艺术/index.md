@@ -1,29 +1,10 @@
-当然可以！以下是《PowerShell命令行编程艺术.md》的完整内容草稿，结构清晰、内容丰富，适合初学者和进阶用户参考：
-
----
-
-# PowerShell命令行编程艺术
+# PowerShell命令行编程艺术（Microsoft Copilot版）
 
 > 掌握命令行的力量，释放自动化的潜能。
 
----
+以下是《PowerShell命令行编程艺术.md》的完整内容草稿，结构清晰、内容丰富，适合初学者和进阶用户参考：
 
-## 📘 目录
-
-1. [PowerShell简介](#powershell简介)  
-2. [基础语法与命令](#基础语法与命令)  
-3. [变量与数据类型](#变量与数据类型)  
-4. [流程控制与逻辑判断](#流程控制与逻辑判断)  
-5. [函数与模块](#函数与模块)  
-6. [对象与管道机制](#对象与管道机制)  
-7. [文件与目录操作](#文件与目录操作)  
-8. [远程管理与自动化](#远程管理与自动化)  
-9. [错误处理与调试技巧](#错误处理与调试技巧)  
-10. [PowerShell实用技巧](#powershell实用技巧)  
-11. [安全性与注意事项](#安全性与注意事项)  
-12. [推荐资源与学习路径](#推荐资源与学习路径)
-
----
+***
 
 ## PowerShell简介
 
@@ -171,7 +152,8 @@ try {
 
 ## 安全性与注意事项
 
-- 脚本执行策略：`Get-ExecutionPolicy`, `Set-ExecutionPolicy`  
+- 脚本执行策略：`Get-ExecutionPolicy`, `Set-ExecutionPolicy` 例如使用 
+   `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 - 推荐使用 `RemoteSigned` 或 `AllSigned`  
 - 谨慎使用管理员权限运行脚本  
 - 避免硬编码密码，使用 `Get-Credential` 获取凭据  

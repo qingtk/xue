@@ -1,54 +1,11 @@
-# PowerShell 命令行编程艺术（借助 GitHub Copilot）
+# PowerShell命令行编程艺术（GitHub Copilot版）
 
 本指南面向想用 PowerShell 做日常自动化、系统管理、开发辅助以及脚本编写的读者。内容从基础到高级，并包含实用技巧、常见陷阱与最佳实践示例。文中示例以 PowerShell 7+（跨平台）为主，同时兼顾 Windows PowerShell（5.1）差异提示。
 
 ## 兼容性注记
 
-- 本文默认以 PowerShell 7+（Core）为准。Windows PowerShell 5.1 与 7+ 在一些命令参数、编码默认值与并行处理特性上存在差异，例如 `ForEach-Object -Parallel` 仅在 PowerShell 7+ 可用；PowerShell Core 的默认编码为 UTF-8，而 5.1 仍使用 UTF-16/ANSI（取决于上下文）。在撰写脚本时，请标注目标 PowerShell 版本或使用兼容性检查。
-
-## 目录
-
-- PowerShell 基础
-  - 交互式使用
-  - 对象管道与管道传输
-  - 常用命令与别名
-  - 变量、类型与强制转换
-- 高级功能与脚本化
-  - 模块与函数设计
-  - 参数绑定与参数集
-  - 异常处理与调试
-  - 异步/并行：Jobs、Runspaces、ForEach-Object -Parallel
-- 系统与文件操作
-  - 文件、目录、权限管理
-  - 注册表与服务控制
-  - 进程与性能监控
-- 网络与 HTTP 自动化
-  - Invoke-WebRequest / Invoke-RestMethod
-  - API 授权（OAuth、Bearer Token）示例
-  - 常见网络故障排查
-- 与 Git / GitHub 的集成
-  - 在脚本中调用 Git
-  - 使用 GitHub API 自动化发行与 Issue 管理
-- PowerShell 实用技巧
-  - 交互友好输出（Format-*、Out-GridView、折叠）
-  - 读写 JSON、YAML、CSV
-  - 使用 SecretManagement 存储敏感信息
-  - 常用正则与文本处理
-- 与其他工具的互操作
-  - 调用外部可执行文件与 Shell 工具
-  - 在 CI（GitHub Actions）中使用 PowerShell
-- 性能与最佳实践
-  - 脚本结构、日志、重试策略
-  - 函数与模块的可测试性
-- 常见陷阱与注意事项
-  - 平台差异（路径、编码）
-  - 权限与执行策略
-  - 安全注意事项
-- 附录
-  - 常用一行命令速查表
-  - 参考资料与链接
-
----
+- 本文默认以 PowerShell 7+（Core）为准。Windows PowerShell 5.1 与 7+ 在一些命令参数、编码默认值与并行处理特性上存在差异，例如 `ForEach-Object -Parallel` 仅在 PowerShell 7+ 可用；PowerShell Core 的默认编码为 UTF-8，而 5.1 仍使用 UTF-16/ANSI（取决于上下文）。在撰写脚本时，请标注目标 PowerShell 版本或使用兼容性检查。 
+___
 
 ## PowerShell 基础
 
