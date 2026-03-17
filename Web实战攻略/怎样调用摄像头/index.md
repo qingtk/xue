@@ -39,207 +39,155 @@ https://chatgpt.com/c/698452d8-7a48-8331-9f4f-a29b572933a6
 async function openCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
-          audio: false
-            });
+      audio: false
+  });
 
-              const video = document.getElementById('camera');
-                video.srcObject = stream;
-                }
+  const video = document.getElementById('camera');
+  video.srcObject = stream;
+}
 
-                openCamera();
-                ```
+openCamera();
+```
 
-                ### ⚠️ 注意事项（很重要）
+### ⚠️ 注意事项（很重要）
+* **必须 https**（或 `localhost`）
+* 用户会看到 **浏览器权限弹窗**
+* 手机端要加 `playsinline`，否则会强制全屏
+ 
+---
+## 三、进阶 1：指定分辨率 / 前后摄像头
+### 1️⃣ 分辨率约束
+```js
+navigator.mediaDevices.getUserMedia({
+    video: {
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+    }
+});
+```
 
-                * **必须 https**（或 `localhost`）
-                * 用户会看到 **浏览器权限弹窗**
-                * 手机端要加 `playsinline`，否则会强制全屏
+### 2️⃣ 手机前后摄像头
+```js
+navigator.mediaDevices.getUserMedia({
+  video: {
+      facingMode: { exact: "environment" } // 后置
+  }
+});
+```
 
-                ---
+| 值             | 含义    |
+| ------------- | ----- |
+| `user`        | 前置摄像头 |
+| `environment` | 后置摄像头 |
+---
+## 四、进阶 2：列出所有摄像头并让用户选择
+### 获取设备列表
+```js
+const devices = await navigator.mediaDevices.enumerateDevices();
+const cameras = devices.filter(d => d.kind === 'videoinput');
+console.log(cameras);
+```
 
-                ## 三、进阶 1：指定分辨率 / 前后摄像头
+返回示例：
+```js
+[
+  { deviceId: "abc", label: "HD Webcam", kind: "videoinput" },
+  { deviceId: "def", label: "USB Camera", kind: "videoinput" }
+]
+```
+### 选择指定摄像头
+```js
+navigator.mediaDevices.getUserMedia({
+  video: {
+      deviceId: { exact: selectedDeviceId }
+  }
+});
+```
+👉 **多摄像头设备（笔电 + USB）必备**
+---
+## 五、进阶 3：拍照（摄像头截图）
+### HTML
+```html
+<video id="camera" autoplay></video>
+<canvas id="shot" width="640" height="480"></canvas>
+<button id="snap">拍照</button>
+```
 
-                ### 1️⃣ 分辨率约束
+### JS
+```js
+const video = document.getElementById('camera');
+const canvas = document.getElementById('shot');
+const ctx = canvas.getContext('2d');
+document.getElementById('snap').onclick = () => {
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+};
+```
 
-                ```js
-                navigator.mediaDevices.getUserMedia({
-                  video: {
-                      width: { ideal: 1280 },
-                          height: { ideal: 720 }
-                            }
-                            });
-                            ```
+你现在已经可以：
+* 人脸识别
+* 扫码
+* OCR
+* 特效滤镜
+---
+## 六、进阶 4：录像（MediaRecorder）
+### 开始录像
+```js
+const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+const recorder = new MediaRecorder(stream);
+const chunks = [];
+recorder.ondataavailable = e => chunks.push(e.data);
+recorder.start();
+```
 
-                            ### 2️⃣ 手机前后摄像头
-
-                            ```js
-                            navigator.mediaDevices.getUserMedia({
-                              video: {
-                                  facingMode: { exact: "environment" } // 后置
-                                    }
-                                    });
-                                    ```
-
-                                    | 值             | 含义    |
-                                    | ------------- | ----- |
-                                    | `user`        | 前置摄像头 |
-                                    | `environment` | 后置摄像头 |
-
-                                    ---
-
-                                    ## 四、进阶 2：列出所有摄像头并让用户选择
-
-                                    ### 获取设备列表
-
-                                    ```js
-                                    const devices = await navigator.mediaDevices.enumerateDevices();
-
-                                    const cameras = devices.filter(d => d.kind === 'videoinput');
-                                    console.log(cameras);
-                                    ```
-
-                                    返回示例：
-
-                                    ```js
-                                    [
-                                      { deviceId: "abc", label: "HD Webcam", kind: "videoinput" },
-                                        { deviceId: "def", label: "USB Camera", kind: "videoinput" }
-                                        ]
-                                        ```
-
-                                        ### 选择指定摄像头
-
-                                        ```js
-                                        navigator.mediaDevices.getUserMedia({
-                                          video: {
-                                              deviceId: { exact: selectedDeviceId }
-                                                }
-                                                });
-                                                ```
-
-                                                👉 **多摄像头设备（笔电 + USB）必备**
-
-                                                ---
-
-                                                ## 五、进阶 3：拍照（摄像头截图）
-
-                                                ### HTML
-
-                                                ```html
-                                                <video id="camera" autoplay></video>
-                                                <canvas id="shot" width="640" height="480"></canvas>
-                                                <button id="snap">拍照</button>
-                                                ```
-
-                                                ### JS
-
-                                                ```js
-                                                const video = document.getElementById('camera');
-                                                const canvas = document.getElementById('shot');
-                                                const ctx = canvas.getContext('2d');
-
-                                                document.getElementById('snap').onclick = () => {
-                                                  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                                  };
-                                                  ```
-
-                                                  你现在已经可以：
-
-                                                  * 人脸识别
-                                                  * 扫码
-                                                  * OCR
-                                                  * 特效滤镜
-
-                                                  ---
-
-                                                  ## 六、进阶 4：录像（MediaRecorder）
-
-                                                  ### 开始录像
-
-                                                  ```js
-                                                  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                                                  const recorder = new MediaRecorder(stream);
-
-                                                  const chunks = [];
-                                                  recorder.ondataavailable = e => chunks.push(e.data);
-
-                                                  recorder.start();
-                                                  ```
-
-                                                  ### 停止并导出
-
-                                                  ```js
-                                                  recorder.stop();
-
-                                                  recorder.onstop = () => {
-                                                    const blob = new Blob(chunks, { type: 'video/webm' });
-                                                      const url = URL.createObjectURL(blob);
-
-                                                        const a = document.createElement('a');
-                                                          a.href = url;
-                                                            a.download = 'record.webm';
-                                                              a.click();
-                                                              };
-                                                              ```
-
-                                                              ---
-
-                                                              ## 七、常见坑（踩过的人都懂）
-
-                                                              ### ❌ 1. HTTP 页面
-
-                                                              ```
-                                                              DOMException: Only secure origins are allowed
-                                                              ```
-
-                                                              ✅ 解决：
-
-                                                              * 用 `https`
-                                                              * 或 `http://localhost`
-
-                                                              ---
-
-                                                              ### ❌ 2. iOS Safari 黑屏
-
-                                                              解决方案：
-
-                                                              ```html
-                                                              <video autoplay muted playsinline></video>
-                                                              ```
-
-                                                              ---
-
-                                                              ### ❌ 3. 用户拒绝权限
-
-                                                              ```js
-                                                              try {
-                                                                await navigator.mediaDevices.getUserMedia({ video: true });
-                                                                } catch (e) {
-                                                                  alert("你拒绝了摄像头权限");
-                                                                  }
-                                                                  ```
-
-                                                                  ---
-
-                                                                  ## 八、你已经能做什么了？
-
-                                                                  用这些 API，你可以直接做出：
-
-                                                                  * 📷 网页相机
-                                                                  * 🎥 Web 录像工具
-                                                                  * 🧠 AI 摄像头（人脸 / 手势 / OCR）
-                                                                  * 📱 H5 扫码支付
-                                                                  * 🎮 Web AR / WebXR
-
-                                                                  ---
-
-                                                                  ## 九、如果你想继续「黑客级玩法」
-
-                                                                  我可以继续带你玩：
-
-                                                                  * ✅ Web + OpenCV.js 实时处理
-                                                                  * ✅ WebRTC 摄像头推流
-                                                                  * ✅ Three.js + 摄像头贴图
-                                                                  * ✅ 权限劫持 & 反指纹（安全研究视角 😈）
-
-                                                                  你想往 **实战应用** 还是 **安全 / 底层原理** 继续？
+### 停止并导出
+```js
+recorder.stop();
+recorder.onstop = () => {
+  const blob = new Blob(chunks, { type: 'video/webm' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'record.webm';
+  a.click();
+};
+```
+---
+## 七、常见坑（踩过的人都懂）
+### ❌ 1. HTTP 页面
+```
+DOMException: Only secure origins are allowed
+```
+✅ 解决：
+* 用 `https`
+* 或 `http://localhost`
+---
+### ❌ 2. iOS Safari 黑屏
+解决方案：
+```html
+<video autoplay muted playsinline></video>
+```
+---
+### ❌ 3. 用户拒绝权限
+```js
+try {
+    await navigator.mediaDevices.getUserMedia({ video: true });
+  } catch (e) {
+      alert("你拒绝了摄像头权限");
+  }
+```
+---
+## 八、你已经能做什么了？
+用这些 API，你可以直接做出：
+* 📷 网页相机
+* 🎥 Web 录像工具
+* 🧠 AI 摄像头（人脸 / 手势 / OCR）
+* 📱 H5 扫码支付
+* 🎮 Web AR / WebXR
+---
+## 九、如果你想继续「黑客级玩法」
+我可以继续带你玩：
+* ✅ Web + OpenCV.js 实时处理
+* ✅ WebRTC 摄像头推流
+* ✅ Three.js + 摄像头贴图
+* ✅ 权限劫持 & 反指纹（安全研究视角 😈）
+你想往 **实战应用** 还是 **安全 / 底层原理** 继续？
